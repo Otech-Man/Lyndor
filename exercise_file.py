@@ -18,7 +18,7 @@ def download(url, course_folder):
         driver = webdriver.Firefox()
     else:
         options = webdriver.ChromeOptions()
-        # options.add_argument('headless')
+        #options.add_argument('permissions.default.stylesheet', 2)
         options.add_argument("--window-size=1300x744")
         driver = webdriver.Chrome(chrome_options=options)
 
@@ -42,6 +42,9 @@ def download(url, course_folder):
     WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "html.no-touch.member.loaded")))
 
+    element = driver.find_element_by_css_selector(".unlocked") 
+    driver.execute_script("document.getElementsByClassName('unlocked')[0].style.maxHeight = 'none';")
+    
     exercises = driver.find_elements_by_css_selector('a > .exercise-name')
     
     for exercise in exercises:
